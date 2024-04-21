@@ -12,7 +12,7 @@
 
 <body style="background-color: gray;">
     <div class="container rounded shadow p-0 mt-4" style="background-color: #eee;height: 600px;position: relative;">
-        <div    id="ball" style="width: 20px;aspect-ratio: 1/1;background: rgb(77, 77, 77);border: solid thin gray;position: absolute;border-radius: 20px;">
+        <div    id="ball" style="width: 40px;aspect-ratio: 1/1;background: orange;border: solid thin orange;position: absolute;border-radius: 20px;margin-left: 300px;margin-top: 100px;">
             
         </div>
     </div>
@@ -21,20 +21,22 @@
 <script>
     $(document).ready(function(){
 
-        let perInterval = 0.1;
+        let gravity = 1000;
+        let loseSpeedPerTouch = 5;
+
+        let perInterval = 1;
         
-        let heightLimit = 577;
+        let heightLimit = 560;
         let ballStartHeight = 100;
         let ballHeight = 100;
         let ballYDirection = 1; // -1
 
         let ball = $('#ball');
-        ball.css({'margin-left' : '300px'});
         ball.css({'margin-top' : ballHeight + 'px'});
 
 
         let v = 0;
-        let a = 1000;
+        let a = gravity;
         let t = 0;
 
         setInterval(function () { 
@@ -42,22 +44,21 @@
             if(ballYDirection == 1)
             {
                 v = a * t;
-                t += perInterval / 200;
+                t += perInterval / 100;
                 ballHeight += v * t / 2
 
                 if(ballHeight >= heightLimit)
                 {
                     ballYDirection = -1;
-                    console.log(v_max);
                 }
             }
             if(ballYDirection == -1)
             {
-                t -= perInterval / 200;
-                v = a * t; 
+                t -= perInterval / 100;
+                v = a * t - loseSpeedPerTouch; 
                 ballHeight -= v * t / 2;
             
-                if(ballHeight <= ballStartHeight)
+                if(v <= 0)
                 {
                     ballYDirection = 1;
                     t = 0;
