@@ -21,53 +21,47 @@
 <script>
     $(document).ready(function(){
 
-        let perInterval = 1;
+        let perInterval = 0.1;
         
-        let heightLimit = 580;
+        let heightLimit = 577;
         let ballStartHeight = 100;
         let ballHeight = 100;
-        let ballYDrection = 1; // -1
+        let ballYDirection = 1; // -1
 
         let ball = $('#ball');
         ball.css({'margin-left' : '300px'});
         ball.css({'margin-top' : ballHeight + 'px'});
 
-        let gravitySpeedWay = 0; // v = at
-        let wayTime = 0; // v = at
-        let lostSpeed = 40;
-        let gravity = 5;
-        let gravitySpeedWayMax;
 
-
+        let v = 0;
+        let a = 1000;
+        let t = 0;
 
         setInterval(function () { 
-            if(ballYDrection == 1){
-                ballHeight += gravitySpeedWay;
+
+            if(ballYDirection == 1)
+            {
+                v = a * t;
+                t += perInterval / 200;
+                ballHeight += v * t / 2
+
+                if(ballHeight >= heightLimit)
+                {
+                    ballYDirection = -1;
+                    console.log(v_max);
+                }
             }
-            if(ballYDrection == -1){
-                ballHeight -= gravitySpeedWay;
-            }
+            if(ballYDirection == -1)
+            {
+                t -= perInterval / 200;
+                v = a * t; 
+                ballHeight -= v * t / 2;
             
-            if( ballHeight >= heightLimit)
-            {
-                gravitySpeedWay -= 0.05;
-                ballYDrection = -1;
-                
-            }
-            if(ballHeight <= ballStartHeight)
-            {
-               ballYDrection = 1;
-               wayTime = 0;
-            }
-
-
-            if (ballYDrection > 0) {
-                wayTime += perInterval / 1000;
-                gravitySpeedWay += gravity * wayTime * wayTime / 2;
-            }
-            if (ballYDrection < 0) {
-                wayTime -= perInterval / 1000;
-                gravitySpeedWay -= gravity * wayTime * wayTime / 2;
+                if(ballHeight <= ballStartHeight)
+                {
+                    ballYDirection = 1;
+                    t = 0;
+                }
             }
             
             ball.css({ 'margin-top': ballHeight + 'px' });
